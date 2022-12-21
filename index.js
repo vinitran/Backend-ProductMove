@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const router = require("./routes/route");
-const apolloServer = require('./graphQL/apolloServer');
 require('dotenv').config()
 
 const sequelize = require('./database/database');
@@ -54,7 +53,6 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors("*"));
 router(app);
-apolloServer(app);
 
 const SV_PORT = process.env.SV_PORT;
 sequelize.sync().then(() => {

@@ -1,5 +1,5 @@
-const users = require('../models/user');
-const userInfo = require('../models/userInfo');
+const stock = require('../models/stockDetail');
+const product = require('../models/product');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const jwt = require("jsonwebtoken");

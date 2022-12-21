@@ -1,4 +1,6 @@
 const { Sequelize } = require('sequelize');
+const relation = require('../models/relation/relation')
+const insertModels = require('./insertModels')
 require('dotenv').config()
 const sequelize = new Sequelize(
     process.env.DATABASE,
@@ -11,4 +13,10 @@ const sequelize = new Sequelize(
     }
 );
 
+const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+insertModels(db, sequelize, Sequelize)
+relation(db)
 module.exports = sequelize;
