@@ -5,7 +5,15 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        stock_id: {
+        user_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        factory_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         }

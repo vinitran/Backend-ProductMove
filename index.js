@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const router = require("./routes/route");
+const router = require("./routes/index");
 require('dotenv').config()
 
-const sequelize = require('./database/database');
-sequelize.authenticate().then(() => {
+const db = require('./database/database');
+
+db.sequelize.authenticate().then(() => {
     console.log('Database connected...');
 }).catch(err => {
     console.log('Error: ' + err);
@@ -42,7 +43,9 @@ const init_swagger = () => {
         }
       },
       basedir: __dirname,
-      files: ['./routes/route.js']
+      files: [
+        './routes/executiveBoard.js'
+      ]
     };
     expressSwagger(options);
   };
@@ -55,7 +58,7 @@ app.use(cors("*"));
 router(app);
 
 const SV_PORT = process.env.SV_PORT;
-sequelize.sync().then(() => {
+db.sequelize.sync().then(() => {
   
     app.listen(SV_PORT, console.log(`Server started on port ${SV_PORT}`));
 }).catch(err => console.log("Error: " + err));
