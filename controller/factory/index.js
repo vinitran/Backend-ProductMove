@@ -68,14 +68,16 @@ const createProduct = async (req, res) => {
     }
 
     const product = await db.product.create({
-        product_detail: {
-            name: body.name,
-            price: body.price,
-            image_url: body.imageUrl,
-            product_line: body.productLine,
-            description: body.description,
-        },
         code: body.code
+    })
+
+    await db.productDetail.create({
+        id: product.id,
+        name: body.name,
+        price: body.price,
+        image_url: body.imageUrl,
+        product_line: body.productLine,
+        description: body.description,
     })
 
     return res.status(200).json({
@@ -106,9 +108,127 @@ const deleteProduct = async (req, res) => {
     })
 }
 
+const insertProductToStock = async (req, res) => {
+    const schema = Joi.object({
+        stockId: Joi.number().required(),
+        productId: Joi.number().required(),
+        quantity: Joi.number().required(),
+    });
+
+    const { body } = req;
+
+    const { err } = schema.validate(body);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const stock = await db.stock.findByPk(body.stockId)
+
+    if (!stock) {
+        return res.status(401).json({ message: "This stock id is not avaiable" });
+
+    }
+
+    const [, created] = await db.productStockDetail.findOrCreate({
+        where: {
+            id: body.stockId,
+            product_id: body.productId
+        },
+        defaults: {
+            product_id: body.productId,
+            stock_id: stock.id,
+            quantity: body.quantity
+        }
+    })
+    if (created == false) {
+        await db.productStockDetail.increment(
+            {
+                quantity: body.quantity
+            },
+            {
+                where: {
+                    product_id: body.productId,
+                    stock_id: stock.id
+                },
+            })
+    }
+
+    return res.status(200).json({ message: "Insert product to stock successfully" });
+}
+
+const exportProductToAgency = async (req, res) => {
+    const schema = Joi.object({
+        factoryStockId: Joi.number().required(),
+        agencyStockId: Joi.number().required(),
+        productId: Joi.number().required(),
+        quantity: Joi.number().required(),
+    });
+
+    const { body } = req;
+
+    const { err } = schema.validate(body);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const factoryStock = await db.stock.findOne({
+        where: {id: body.factoryStockId}
+    })
+    if (!factoryStock) {
+        return res.status(401).json({ message: "This factory stock is not avaiable" });
+    }
+
+    const agencyStock = await db.stock.findOne({
+        where: {id: body.agencyStockId}
+    })
+    if (!agencyStock) {
+        return res.status(401).json({ message: "This agency stock is not avaiable" });
+    }
+    console.log(factoryStock.dataValues.id)
+
+    await db.productStockDetail.increment(
+        {
+            quantity: -body.quantity
+        },
+        {
+            where: {
+                product_id: body.productId,
+                stock_id: factoryStock.dataValues.id
+            },
+        })
+
+    const [, created] = await db.productStockDetail.findOrCreate({
+        where: {
+            id: agencyStock.dataValues.id,
+            product_id: body.productId
+        },
+        defaults: {
+            product_id: body.productId,
+            stock_id: agencyStock.dataValues.id,
+            quantity: body.quantity
+        }
+    })
+    if (created == false) {
+        await db.productStockDetail.increment(
+            {
+                quantity: body.quantity
+            },
+            {
+                where: {
+                    product_id: body.productId,
+                    stock_id: agencyStock.dataValues.id
+                },
+            })
+    }
+
+    return res.status(200).json({ message: "Export product from factory to agency successfully" });
+}
+
 const factory = {
     login,
     createProduct,
-    deleteProduct
+    deleteProduct,
+    insertProductToStock,
+    exportProductToAgency
 }
 module.exports = factory

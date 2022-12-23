@@ -6,16 +6,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        product_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         category: {
             type: DataTypes.ENUM('factory', 'agency', 'insurance'),
-            allowNull: false,
-        },
-        quantity: {
-            type: DataTypes.INTEGER,
             allowNull: false,
         }
     },

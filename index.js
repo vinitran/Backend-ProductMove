@@ -45,7 +45,8 @@ const init_swagger = () => {
       basedir: __dirname,
       files: [
         './routes/executiveBoard.js',
-        './routes/factory.js'
+        './routes/factory.js',
+        './routes/stock.js'
       ]
     };
     expressSwagger(options);
