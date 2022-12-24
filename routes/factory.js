@@ -16,28 +16,6 @@ const factoryRoute = (app) => {
         factoryController.login(req, res);
     })
 
-    /**
-     * @typedef Product
-     * @property {string} code.required -
-     * @property {string} name.required -
-     * @property {number} price.required -
-     * @property {string} imageUrl.required -
-     * @property {string} productLine.required -
-     * @property {string} description.required -
-     */
-    /**
-     * Create new product
-     * @route POST /factory/product/create
-     * @security JWT
-     * @param {Product.model} point.body.required - Product information
-     * @group Factory
-     * @returns {object} 200 - message
-     * @returns {Error}  default - Unexpected error
-     */
-
-    app.post("/api/factory/product/create", authenFactory, async (req, res, next) => {
-        factoryController.createProduct(req, res);
-    })
 
     /**
      * @typedef ProductInStock
@@ -78,20 +56,6 @@ const factoryRoute = (app) => {
 
     app.post("/api/factory/export-product/agency", authenFactory, async (req, res, next) => {
         factoryController.exportProductToAgency(req, res);
-    })
-
-    /**
-     * Login admin account
-     * @route DELETE /factory/product/delete/{id}
-     * @security JWT
-     * @param {number}  id.path.required - Product Id
-     * @group Factory
-     * @returns {object} 200 - message
-     * @returns {Error}  default - Unexpected error
-     */
-
-    app.delete("/api/factory/product/delete/:id", authenFactory, async (req, res, next) => {
-        factoryController.deleteProduct(req, res);
     })
 
 }

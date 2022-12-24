@@ -1,6 +1,7 @@
 const executiveBoardRoute = require("./executiveBoard")
 const factoryRoute = require("./factory")
 const stockRoute = require("./stock")
+const productRoute = require("./product")
 
 const router = (app) => {
     app.get('/', (req, res) => {
@@ -9,6 +10,7 @@ const router = (app) => {
     executiveBoardRoute(app)
     factoryRoute(app)
     stockRoute(app)
+    productRoute(app)
 }
 
 module.exports = router;

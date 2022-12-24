@@ -7,6 +7,7 @@ const stockRoute = (app) => {
      * Get Stocks by category
      * @route GET /stocks/category/{category}
      * @security JWT
+     * @param {string}  category.path.required - category
      * @group Stock
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
@@ -34,7 +35,7 @@ const stockRoute = (app) => {
      * Insert product to stock
      * @route POST /stocks/{category}
      * @security JWT
-     * @param {string}  category.required - Category
+     * @param {string}  category.path.required - Category
      * @group Stock
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error

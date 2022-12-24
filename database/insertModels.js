@@ -2,7 +2,6 @@ const insertModels = (db, sequelize, Sequelize) => {
     db.stock = require("../models/stock")(sequelize, Sequelize);
     db.productStockDetail = require("../models/productStockDetail")(sequelize, Sequelize);
     db.product = require("../models/product")(sequelize, Sequelize);
-    db.productDetail = require("../models/productDetail")(sequelize, Sequelize);
     db.accountAdmin = require("../models/accountAdmin")(sequelize, Sequelize);
     db.accountFactory = require("../models/accountFactory")(sequelize, Sequelize);
     db.factory = require("../models/factory")(sequelize, Sequelize);

@@ -5,10 +5,26 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        code: {
-            type: DataTypes.STRING(50),
+        name: {
+            type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        price: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        image_url: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        product_line: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
     },
     {
         tableName: "product",

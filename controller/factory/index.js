@@ -50,64 +50,6 @@ const login = async (req, res) => {
     return res.status(200).json(okResponse);
 }
 
-const createProduct = async (req, res) => {
-    const schema = Joi.object({
-        code: Joi.string().required(),
-        name: Joi.string().required(),
-        price: Joi.number().required(),
-        imageUrl: Joi.string().required(),
-        productLine: Joi.string().required(),
-        description: Joi.string().required()
-    });
-
-    const { body } = req;
-
-    const { err } = schema.validate(body);
-    if (err) {
-        return res.status(400).send(err);
-    }
-
-    const product = await db.product.create({
-        code: body.code
-    })
-
-    await db.productDetail.create({
-        id: product.id,
-        name: body.name,
-        price: body.price,
-        image_url: body.imageUrl,
-        product_line: body.productLine,
-        description: body.description,
-    })
-
-    return res.status(200).json({
-        message: "Successfull create new product"
-    })
-}
-
-const deleteProduct = async (req, res) => {
-    const schema = Joi.object({
-        id: Joi.number().required(),
-    });
-
-    const { params } = req;
-
-    const { err } = schema.validate(params);
-    if (err) {
-        return res.status(400).send(err);
-    }
-
-    const product = await db.product.findByPk(params.id)
-    const productDetail = await db.productDetail.findByPk(params.id)
-
-    await product.destroy();
-    await productDetail.destroy();
-
-    return res.status(200).json({
-        message: "Delete product successfully"
-    })
-}
-
 const insertProductToStock = async (req, res) => {
     const schema = Joi.object({
         stockId: Joi.number().required(),
@@ -226,8 +168,6 @@ const exportProductToAgency = async (req, res) => {
 
 const factory = {
     login,
-    createProduct,
-    deleteProduct,
     insertProductToStock,
     exportProductToAgency
 }

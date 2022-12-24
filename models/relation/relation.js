@@ -1,6 +1,4 @@
 const relation = (db) => {
-    db.product.hasOne(db.productDetail, { foreignKey: "id" });
-
     db.productBillDetail.hasOne(db.product, { foreignKey: "product_id" });
 
     db.insuranceBill.hasOne(db.product, { foreignKey: "product_id" });
