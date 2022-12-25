@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         category: {
             type: DataTypes.ENUM('factory', 'agency', 'insurance'),
             allowNull: false,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        address: {
+            type: DataTypes.STRING,
+            allowNull: false,
         }
     },
     {

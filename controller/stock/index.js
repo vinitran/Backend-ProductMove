@@ -65,8 +65,10 @@ const createStockByCategory = async (req, res) => {
         return res.status(400).send(err);
     }
 
-    const stock = await db.stock.create({
-        category: params.category
+    await db.stock.create({
+        category: params.category,
+        name: "admin",
+        address: "admin"
     })
 
     return res.status(200).json({ message: "Create new stock successfully" });
