@@ -6,6 +6,13 @@ const db = require('../../database/database')
 
 const authentication = require('./authentication')
 
+const getInformation =  async (req, res) => {
+    jwt.verify(req.headers['authorization'], process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        if (err) res.sendStatus(403);
+        return res.status(200).json(data)
+    });
+}
+
 const providingAccount = async (req, res) => {
     const { body } = req;
     const { params } = req;
@@ -52,6 +59,8 @@ const providingAccount = async (req, res) => {
 const executiveBoard = {
     register: authentication.register,
     login: authentication.login,
-    providingAccount
+    providingAccount,
+    getInformation
+
 }
 module.exports = executiveBoard

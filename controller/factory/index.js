@@ -17,9 +17,10 @@ const login = async (req, res) => {
         return res.status(400).send(err);
     }
 
-    let account = await db.accountFactory.findOne({
+    let account = await db.account.findOne({
         where: {
-            user_name: body.username
+            user_name: body.username,
+            role: 'factory'
         }
     });
 
@@ -45,7 +46,8 @@ const login = async (req, res) => {
         message: "Login successfully",
         username: account.username,
         accessToken,
-        refreshToken
+        refreshToken,
+        role: "factory"
     };
     return res.status(200).json(okResponse);
 }

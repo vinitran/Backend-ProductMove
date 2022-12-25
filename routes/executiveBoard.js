@@ -58,6 +58,19 @@ const executiveBoardRoute = (app) => {
         executiveBoard.providingAccount(req, res);
     })
 
+    /**
+     * Register admin account
+     * @route GET /executive-board/information
+     * @security JWT
+     * @group Executive Board
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/executive-board/information",authenAdmin, async (req, res, next) => {
+        executiveBoard.getInformation(req, res);
+    })
+
 }
 
 module.exports = executiveBoardRoute

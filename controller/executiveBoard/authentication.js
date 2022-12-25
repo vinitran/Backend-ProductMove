@@ -68,7 +68,7 @@ const login = async (req, res) => {
     if (!password) return res.status(400).json({ message: "invalid password" });
 
     const objToHash = {
-        username: account.username,
+        username: body.username,
         authority: "admin"
     }
     const accessToken = jwt.sign(objToHash, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
