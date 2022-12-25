@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const accountFactory = sequelize.define('account_factory', {
+    const account = sequelize.define('account', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -13,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        factory_id: {
-            type: DataTypes.INTEGER,
+        role: {
+            type: DataTypes.ENUM('factory', 'insurance', 'agency'),
             allowNull: false
         }
     },
         {
-            tableName: "account_factory",
+            tableName: "account",
             timestamps: true
         });
 
-    return accountFactory;
+    return account;
 };

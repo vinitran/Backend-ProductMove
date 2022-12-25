@@ -42,60 +42,20 @@ const executiveBoardRoute = (app) => {
      * @typedef Factory
      * @property {string} username.required -
      * @property {string} password.required -
-     * @property {number} factoryId.required -
      */
     /**
      * Login admin account
-     * @route POST /executive-board/provide-account/factory
+     * @route POST /executive-board/provide-account/{role}
      * @security JWT
      * @param {Factory.model} point.body.required - Factory account information
+     * @param {string} role.path.required - Role
      * @group Executive Board
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
      */
 
-    app.post("/api/executive-board/provide-account/factory", authenAdmin, async (req, res, next) => {
-        executiveBoard.providingFactoryAccount(req, res);
-    })
-
-    /**
-     * @typedef Agency
-     * @property {string} username.required -
-     * @property {string} password.required -
-     * @property {number} agencyId.required -
-     */
-    /**
-     * Login admin account
-     * @route POST /executive-board/provide-account/agency
-     * @security JWT
-     * @param {Agency.model} point.body.required - Agency account information
-     * @group Executive Board
-     * @returns {object} 200 - message
-     * @returns {Error}  default - Unexpected error
-     */
-
-    app.post("/api/executive-board/provide-account/agency", authenAdmin, async (req, res, next) => {
-        executiveBoard.providingAgencyAccount(req, res);
-    })
-
-    /**
-     * @typedef Insurance
-     * @property {string} username.required -
-     * @property {string} password.required -
-     * @property {number} insuranceId.required -
-     */
-    /**
-     * Login admin account
-     * @route POST /executive-board/provide-account/insurance
-     * @security JWT
-     * @param {Insurance.model} point.body.required - Insurance account information
-     * @group Executive Board
-     * @returns {object} 200 - message
-     * @returns {Error}  default - Unexpected error
-     */
-
-    app.post("/api/executive-board/provide-account/insurance", authenAdmin, async (req, res, next) => {
-        executiveBoard.providingInsuranceAccount(req, res);
+    app.post("/api/executive-board/provide-account/:role", authenAdmin, async (req, res, next) => {
+        executiveBoard.providingAccount(req, res);
     })
 
 }
