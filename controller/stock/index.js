@@ -17,11 +17,12 @@ const getStocksByCategory = async (req, res) => {
     }
 
     const stocks = await db.stock.findAll({
-        where: {category: params.category}
+        where: { category: params.category },
+        include: db.productStockDetail
     })
 
     if (!stocks) {
-        return res.status(200).json({message: "The factory stock is unavailable"});
+        return res.status(200).json({ message: "The factory stock is unavailable" });
     }
 
     return res.status(200).json(stocks);
@@ -42,11 +43,12 @@ const getStockById = async (req, res) => {
         where: {
             category: "factory",
             id: params.id
-        }
+        },
+        include: db.productStockDetail
     })
 
     if (!stocks) {
-        return res.status(200).json({message: "The factory stock is unavailable"});
+        return res.status(200).json({ message: "The factory stock is unavailable" });
     }
 
     return res.status(200).json(stocks);
@@ -67,13 +69,65 @@ const createStockByCategory = async (req, res) => {
         category: params.category
     })
 
-    return res.status(200).json({message: "Create new stock successfully"});
+    return res.status(200).json({ message: "Create new stock successfully" });
+}
+
+const getSendHistoryByCategory = async (req, res) => {
+    const schema = Joi.object({
+        category: Joi.string().required(),
+    });
+
+    const { params } = req;
+
+    const { err } = schema.validate(params);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const history = await db.stockHistory.findAll({
+        include: [{
+            model: db.stock,
+            where: {
+                category: params.category,
+            },
+            as: "sender"
+        }]
+    })
+
+    return res.status(200).json(history);
+}
+
+const getReceiverHistoryByCategory = async (req, res) => {
+    const schema = Joi.object({
+        category: Joi.string().required(),
+    });
+
+    const { params } = req;
+
+    const { err } = schema.validate(params);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const history = await db.stockHistory.findAll({
+        include: [{
+            model: db.stock,
+            where: {
+                category: params.category,
+            },
+            as: "receiver"
+        }]
+    })
+
+    return res.status(200).json(history);
 }
 
 const stock = {
     getStocksByCategory,
     getStockById,
-    createStockByCategory
+    createStockByCategory,
+    getSendHistoryByCategory,
+    getReceiverHistoryByCategory,
 }
 
 module.exports = stock

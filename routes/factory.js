@@ -40,7 +40,7 @@ const factoryRoute = (app) => {
     /**
      * @typedef ExportProductToAgency
      * @property {number} factoryStockId.required -
-     * @property {number} AgencyStockId.required -
+     * @property {number} agencyStockId.required -
      * @property {number} productId.required -
      * @property {number} quantity.required -
      */

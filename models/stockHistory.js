@@ -1,17 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-    const productStockDetail = sequelize.define('product_stock_detail', {
+    const stockHistory = sequelize.define('stock_history', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        product_id: {
+        sender_stock_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        stock_id: {
+        receiver_stock_id: {
             type: DataTypes.INTEGER,
-            primaryKey: false,
+            allowNull: false,
+        },
+        product_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         quantity: {
@@ -20,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     {
-        tableName: "product_stock_detail",
+        tableName: "stock_history",
         timestamps: true
     });
 
-    return productStockDetail;
+    return stockHistory;
 };
 

@@ -28,7 +28,7 @@ const productRoute = (app) => {
      */
     /**
      * Create new product
-     * @route POST /factory/product/create
+     * @route POST /products/create
      * @security JWT
      * @param {Product.model} point.body.required - Product information
      * @group Product
@@ -40,9 +40,11 @@ const productRoute = (app) => {
         product.createProduct(req, res);
     });
 
+    
+
     /**
      * Login admin account
-     * @route DELETE /factory/product/delete/{id}
+     * @route DELETE /products/delete/{id}
      * @security JWT
      * @param {number}  id.path.required - Product Id
      * @group Product
@@ -53,6 +55,8 @@ const productRoute = (app) => {
     app.delete("/api/products/delete/:id", authenFactory, async (req, res, next) => {
         product.deleteProduct(req, res);
     });
+
+
 
 }
 

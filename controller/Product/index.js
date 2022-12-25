@@ -73,14 +73,15 @@ const deleteProduct = async (req, res) => {
     }
 
     const product = await db.product.findByPk(params.id)
-    const productDetail = await db.productDetail.findByPk(params.id)
-
     await product.destroy();
-    await productDetail.destroy();
 
     return res.status(200).json({
         message: "Delete product successfully"
     })
+}
+
+const countProductInStock = async (req, res) => {
+    
 }
 
 const product = {

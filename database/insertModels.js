@@ -13,6 +13,7 @@ const insertModels = (db, sequelize, Sequelize) => {
     db.productBill = require("../models/productBill")(sequelize, Sequelize);
     db.productBillDetail = require("../models/productBillDetail")(sequelize, Sequelize);
     db.insuranceBill = require("../models/insuranceBill")(sequelize, Sequelize);
+    db.stockHistory = require("../models/stockHistory")(sequelize, Sequelize);
 }
 
 module.exports = insertModels;

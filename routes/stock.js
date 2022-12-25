@@ -33,6 +33,34 @@ const stockRoute = (app) => {
 
     /**
      * Insert product to stock
+     * @route GET /stocks/history/category/{category}/send
+     * @security JWT
+     * @param {string}  category.path.required - Product Id
+     * @group Stock
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/stocks/history/category/:category/send", authen, async (req, res, next) => {
+        stock.getSendHistoryByCategory(req, res);
+    });
+
+    /**
+     * Insert product to stock
+     * @route GET /stocks/history/category/{category}/receive
+     * @security JWT
+     * @param {string}  category.path.required - Product Id
+     * @group Stock
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/stocks/history/category/:category/receive", authen, async (req, res, next) => {
+        stock.getReceiverHistoryByCategory(req, res);
+    });
+
+    /**
+     * Insert product to stock
      * @route POST /stocks/{category}
      * @security JWT
      * @param {string}  category.path.required - Category

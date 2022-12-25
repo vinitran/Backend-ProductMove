@@ -50,6 +50,7 @@ const login = async (req, res) => {
     return res.status(200).json(okResponse);
 }
 
+
 const insertProductToStock = async (req, res) => {
     const schema = Joi.object({
         stockId: Joi.number().required(),
@@ -73,7 +74,7 @@ const insertProductToStock = async (req, res) => {
 
     const [, created] = await db.productStockDetail.findOrCreate({
         where: {
-            id: body.stockId,
+            stock_id: body.stockId,
             product_id: body.productId
         },
         defaults: {
@@ -114,14 +115,14 @@ const exportProductToAgency = async (req, res) => {
     }
 
     const factoryStock = await db.stock.findOne({
-        where: {id: body.factoryStockId}
+        where: { id: body.factoryStockId }
     })
     if (!factoryStock) {
         return res.status(401).json({ message: "This factory stock is not avaiable" });
     }
 
     const agencyStock = await db.stock.findOne({
-        where: {id: body.agencyStockId}
+        where: { id: body.agencyStockId }
     })
     if (!agencyStock) {
         return res.status(401).json({ message: "This agency stock is not avaiable" });
@@ -141,7 +142,7 @@ const exportProductToAgency = async (req, res) => {
 
     const [, created] = await db.productStockDetail.findOrCreate({
         where: {
-            id: agencyStock.dataValues.id,
+            stock_id: agencyStock.dataValues.id,
             product_id: body.productId
         },
         defaults: {
@@ -162,6 +163,13 @@ const exportProductToAgency = async (req, res) => {
                 },
             })
     }
+
+    await db.stockHistory.create({
+        sender_stock_id: factoryStock.dataValues.id,
+        receiver_stock_id: agencyStock.dataValues.id,
+        product_id: body.productId,
+        quantity: body.quantity
+    })
 
     return res.status(200).json({ message: "Export product from factory to agency successfully" });
 }
