@@ -4,6 +4,18 @@ const jwt = require("jsonwebtoken");
 
 const db = require('../../database/database')
 
+const getProduct = async (req, res) => {
+    let product = await db.product.findAll();
+
+    if (!product) {
+        return res.status(400).json({
+            message: "This product is not available"
+        })
+    }
+
+    return res.status(200).json(product);
+}
+
 const getProductById = async (req, res) => {
     const schema = Joi.object({
         id: Joi.number().required(),
@@ -80,11 +92,9 @@ const deleteProduct = async (req, res) => {
     })
 }
 
-const countProductInStock = async (req, res) => {
-    
-}
 
 const product = {
+    getProduct,
     getProductById,
     createProduct,
     deleteProduct

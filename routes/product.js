@@ -2,6 +2,19 @@ const { authen, authenFactory } = require("../authentication/authen");
 const product = require("../controller/product/index")
 
 const productRoute = (app) => {
+
+    /**
+     * Get product by id
+     * @route GET /products
+     * @security JWT
+     * @group Product
+     * @returns {object} 200 - Product
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/products", authen, async (req, res, next) => {
+        product.getProduct(req, res);
+    });
     
     /**
      * Get product by id
