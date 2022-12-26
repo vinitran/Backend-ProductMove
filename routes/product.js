@@ -30,6 +30,20 @@ const productRoute = (app) => {
         product.getProductById(req, res);
     });
 
+     /**
+     * Get product by id
+     * @route GET /products/sort/productline
+     * @param {string}  productline.query.required - category
+     * @security JWT
+     * @group Product
+     * @returns {object} 200 - Product
+     * @returns {Error}  default - Unexpected error
+     */
+
+     app.get("/api/products/sort/productline",authen, async (req, res, next) => {
+        product.getProductByProductLine(req, res);
+    });
+
     /**
      * @typedef Product
      * @property {string} code.required -

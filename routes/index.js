@@ -1,5 +1,8 @@
 const executiveBoardRoute = require("./executiveBoard")
 const factoryRoute = require("./factory")
+const agencyRoute = require("./agency")
+const insuranceRoute = require("./insurance")
+
 const stockRoute = require("./stock")
 const productRoute = require("./product")
 
@@ -9,6 +12,9 @@ const router = (app) => {
     })
     executiveBoardRoute(app)
     factoryRoute(app)
+    agencyRoute(app)
+    insuranceRoute(app)
+
     stockRoute(app)
     productRoute(app)
 }

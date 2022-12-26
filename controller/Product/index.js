@@ -92,11 +92,28 @@ const deleteProduct = async (req, res) => {
     })
 }
 
+const getProductByProductLine = async (req, res) => {
+    console.log("a")
+    const producLine = req.query.productline;
+
+    const product = await db.product.findAll({ 
+        where: {
+            product_line: producLine
+        }        
+    })
+
+    if (!product) {
+        return res.status(400).json({ message: "Product not found"})
+    }
+
+    return res.status(200).json(product)
+}
 
 const product = {
     getProduct,
     getProductById,
     createProduct,
-    deleteProduct
+    deleteProduct,
+    getProductByProductLine
 }
 module.exports = product
