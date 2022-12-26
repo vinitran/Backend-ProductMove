@@ -4,9 +4,6 @@ const insertModels = (db, sequelize, Sequelize) => {
     db.product = require("../models/product")(sequelize, Sequelize);
     db.accountAdmin = require("../models/accountAdmin")(sequelize, Sequelize);
     db.account = require("../models/account")(sequelize, Sequelize);
-    db.factory = require("../models/factory")(sequelize, Sequelize);
-    db.agency = require("../models/agency")(sequelize, Sequelize);
-    db.insurance = require("../models/insurance")(sequelize, Sequelize);
     db.customer = require("../models/customer")(sequelize, Sequelize);
     db.productBill = require("../models/productBill")(sequelize, Sequelize);
     db.productBillDetail = require("../models/productBillDetail")(sequelize, Sequelize);

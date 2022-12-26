@@ -20,7 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        }
+        },
+        status:  {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
     },
     {
         tableName: "stock_history",

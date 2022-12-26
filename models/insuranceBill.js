@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM('received', 'pending', 'sent'),
+            type: DataTypes.ENUM('agency', 'factory', 'insurance', 'customer'),
             allowNull: false,
         },
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        insurance_id: {
+        stock_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
         }

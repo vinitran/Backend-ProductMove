@@ -93,6 +93,9 @@ const getSendHistoryByCategory = async (req, res) => {
                 category: params.category,
             },
             as: "sender"
+        }, {
+            model: db.stock,
+            as: "receiver"
         }]
     })
 
@@ -114,6 +117,10 @@ const getReceiverHistoryByCategory = async (req, res) => {
     const history = await db.stockHistory.findAll({
         include: [{
             model: db.stock,
+            as: "sender"
+        },
+        {
+            model: db.stock,
             where: {
                 category: params.category,
             },
@@ -123,6 +130,8 @@ const getReceiverHistoryByCategory = async (req, res) => {
 
     return res.status(200).json(history);
 }
+
+
 
 const stock = {
     getStocksByCategory,

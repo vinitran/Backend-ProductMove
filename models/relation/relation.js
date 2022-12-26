@@ -1,9 +1,4 @@
 const relation = (db) => {
-    // db.productBillDetail.hasOne(db.product, { foreignKey: "product_id" });
-
-    // db.insuranceBill.hasOne(db.product, { foreignKey: "product_id" });
-    // db.insuranceBill.hasMany(db.insurance, { foreignKey: "insurance_id" });
-    // db.insuranceBill.hasOne(db.customer, { foreignKey: "customer_id" });
 
     db.stockHistory.belongsTo(db.product, { foreignKey: "product_id" });
     db.stockHistory.belongsTo(db.stock, {as: 'sender', foreignKey: "sender_stock_id" });
@@ -14,25 +9,29 @@ const relation = (db) => {
 
     db.product.hasOne(db.productStockDetail, { foreignKey: "product_id" });
     db.product.hasOne(db.stockHistory, { foreignKey: "product_id" });
+    db.product.hasOne(db.insuranceBill, { foreignKey: "product_id" });
+    db.product.hasOne(db.productBillDetail, { foreignKey: "product_id" });
     
     db.stock.hasMany(db.productStockDetail, { foreignKey: "stock_id" });
     db.stock.hasMany(db.stockHistory, { foreignKey: "receiver_stock_id" });
     db.stock.hasMany(db.stockHistory, { foreignKey: "sender_stock_id" });
+    db.stock.hasMany(db.insuranceBill, { foreignKey: "stock_id" });
+    db.stock.hasMany(db.productBill, { foreignKey: "stock_id" });
 
-    // db.factory.hasMany(db.stock, { foreignKey: "stock_id" });
+    db.productBill.belongsTo(db.stock, { foreignKey: "stock_id" });
+    db.productBill.belongsTo(db.customer, { foreignKey: "customer_id" });
+    db.productBill.belongsTo(db.customer, { foreignKey: "bill_detail_id" });
 
-    // db.agency.hasMany(db.stock, { foreignKey: "stock_id" });
+    db.insuranceBill.belongsTo(db.customer, { foreignKey: "customer_id" });
+    db.insuranceBill.belongsTo(db.stock, { foreignKey: "stock_id" });
+    db.insuranceBill.belongsTo(db.product, { foreignKey: "product_id" });
 
-    // db.insurance.hasMany(db.stock, { foreignKey: "stock_id" });
+    db.customer.hasMany(db.insuranceBill, { foreignKey: "product_id" });
+    db.customer.hasMany(db.productBill, { foreignKey: "product_id" });
 
-    // db.accountFactory.hasOne(db.factory, { foreignKey: "factory_id" });
+    db.productBillDetail.hasOne(db.productBill, { foreignKey: "product_id" });
+    db.productBillDetail.belongsTo(db.product, { foreignKey: "product_id" });
 
-    // db.factory.hasMany(db.stock, { foreignKey: "stock_id" });
-
-    // db.productBill.hasOne(db.agency, { foreignKey: "agency_id" });
-    // db.productBill.hasMany(db.productBillDetail, { foreignKey: "bill_detail_id" });
-
-    // db.accountInsurance.hasOne(db.insurance, { foreignKey: "insurance_id" });
 }
 
 module.exports = relation;
