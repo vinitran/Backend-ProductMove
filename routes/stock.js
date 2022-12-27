@@ -60,10 +60,16 @@ const stockRoute = (app) => {
     });
 
     /**
+     * @typedef StockInfor
+     * @property {string} name.required -
+     * @property {string} address.required -
+     */
+    /**
      * Insert product to stock
      * @route POST /stocks/{category}
      * @security JWT
      * @param {string}  category.path.required - Category
+     * @param {StockInfor.model}  point.body.required - Category
      * @group Stock
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error

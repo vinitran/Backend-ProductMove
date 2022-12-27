@@ -5,7 +5,7 @@ const router = require("./routes/index");
 require('dotenv').config()
 
 const db = require('./database/database');
-
+const init_swagger = require('./swagger/index');
 db.sequelize.authenticate().then(() => {
     console.log('Database connected...');
 }).catch(err => {
@@ -14,48 +14,7 @@ db.sequelize.authenticate().then(() => {
 
 const app = express();
 
-
-const init_swagger = () => {
-    const expressSwagger = require('express-swagger-generator')(app);
-  
-    let options = {
-      explorer: true,
-      swaggerDefinition: {
-        info: {
-          description: 'RESFULL API',
-          title: 'RESFULL API',
-          version: '1.0',
-        },
-        host: "localhost:5000",
-        basePath: '/api',
-        produces: [
-          "application/json",
-          "application/xml"
-        ],
-        schemes: ['http', 'https'],
-        securityDefinitions: {
-          JWT: {
-            type: 'apiKey',
-            in: 'headers',
-            name: 'authorization',
-            description: ""
-          }
-        }
-      },
-      basedir: __dirname,
-      files: [
-        './routes/executiveBoard.js',
-        './routes/factory.js',
-        './routes/stock.js',
-        './routes/product.js',
-        './routes/agency.js',
-        './routes/insurance.js'
-      ]
-    };
-    expressSwagger(options);
-  };
-  
-  init_swagger();
+init_swagger(app);
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));

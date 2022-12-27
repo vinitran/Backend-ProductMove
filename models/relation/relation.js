@@ -18,18 +18,18 @@ const relation = (db) => {
     db.stock.hasMany(db.insuranceBill, { foreignKey: "stock_id" });
     db.stock.hasMany(db.productBill, { foreignKey: "stock_id" });
 
+    db.productBill.hasMany(db.productBillDetail, { foreignKey: "product_bill_id" });
     db.productBill.belongsTo(db.stock, { foreignKey: "stock_id" });
     db.productBill.belongsTo(db.customer, { foreignKey: "customer_id" });
-    db.productBill.belongsTo(db.customer, { foreignKey: "bill_detail_id" });
 
     db.insuranceBill.belongsTo(db.customer, { foreignKey: "customer_id" });
     db.insuranceBill.belongsTo(db.stock, { foreignKey: "stock_id" });
     db.insuranceBill.belongsTo(db.product, { foreignKey: "product_id" });
 
     db.customer.hasMany(db.insuranceBill, { foreignKey: "product_id" });
-    db.customer.hasMany(db.productBill, { foreignKey: "product_id" });
+    db.customer.hasMany(db.productBill, { foreignKey: "customer_id" });
 
-    db.productBillDetail.hasOne(db.productBill, { foreignKey: "product_id" });
+    db.productBillDetail.belongsTo(db.productBill, { foreignKey: "product_bill_id" });
     db.productBillDetail.belongsTo(db.product, { foreignKey: "product_id" });
 
 }

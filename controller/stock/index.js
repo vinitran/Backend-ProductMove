@@ -55,7 +55,7 @@ const getStockById = async (req, res) => {
 }
 
 const createStockByCategory = async (req, res) => {
-    const { params } = req;
+    const { params, body } = req;
 
     const schema = Joi.object({
         id: Joi.number().required(),
@@ -65,13 +65,16 @@ const createStockByCategory = async (req, res) => {
         return res.status(400).send(err);
     }
 
-    await db.stock.create({
+    const stock = await db.stock.create({
         category: params.category,
-        name: "admin",
-        address: "admin"
+        name: body.name,
+        address: body.address
     })
 
-    return res.status(200).json({ message: "Create new stock successfully" });
+    return res.status(200).json({ 
+        message: "Create new stock successfully" ,
+        stock
+    });
 }
 
 const getSendHistoryByCategory = async (req, res) => {

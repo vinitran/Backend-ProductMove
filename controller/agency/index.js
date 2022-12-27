@@ -52,7 +52,82 @@ const login = async (req, res) => {
     return res.status(200).json(okResponse);
 }
 
+const createCustomer = async (req, res) => {
+    const { body } = req;
+
+    let schema = Joi.object({
+        name: Joi.string().required(),
+        phoneNumber: Joi.string().required(),
+        address: Joi.string().required(),
+    });
+    const { err } = schema.validate(body);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const customer = await db.customer.create({
+        name: body.name,
+        phone_number: body.phoneNumber,
+        address: body.address
+    })
+
+    return res.status(200).json({
+        message: "Create new customer successfully",
+        customer
+    })
+}
+
+const sell = async (req, res) => {
+
+}
+
+const createBillDetail = async (req, res) => {
+    const { body, params } = req;
+
+    let schema = Joi.object({
+        productId: Joi.number().required(),
+        quantity: Joi.number().required(),
+    });
+    const { err } = schema.validate(body);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    await db.productBillDetail.create({
+        product_id: body.productId,
+        quantity: body.quantity,
+        product_bill_id: params.id
+    })
+}
+
+const createBill = async (req, res) => {
+    const { body } = req;
+
+    let schema = Joi.object({
+        customerId: Joi.number().required(),
+        stockId: Joi.number().required(),
+    });
+    const { err } = schema.validate(body);
+    if (err) {
+        return res.status(400).send(err);
+    }
+
+    const productBill = await db.productBill.create({
+        customer_id: body.customerId,
+        stock_id: body.stockId
+    })
+
+    return res.status(200).json({
+        message: "Create product Bill successfully",
+        productBill
+    })
+}
+
+
 const agency = {
     login,
+    createCustomer,
+    createBillDetail,
+    createBill
 }
 module.exports = agency

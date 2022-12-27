@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         sender_stock_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         receiver_stock_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         product_id: {
             type: DataTypes.INTEGER,

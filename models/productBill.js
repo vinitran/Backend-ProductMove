@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        bill_detail_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         stock_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
