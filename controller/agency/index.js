@@ -93,11 +93,13 @@ const createBillDetail = async (req, res) => {
         return res.status(400).send(err);
     }
 
-    await db.productBillDetail.create({
+    const productBillDetail = await db.productBillDetail.create({
         product_id: body.productId,
         quantity: body.quantity,
         product_bill_id: params.id
     })
+
+    return res.status(200).json({message: "Create detail bill successfully", productBillDetail})
 }
 
 const createBill = async (req, res) => {
@@ -123,11 +125,30 @@ const createBill = async (req, res) => {
     })
 }
 
+const getProductBillById = async(req, res) => {
+    const productBill = await db.productBill.findByPk(req.params.id,
+        {include: db.productBillDetail}
+        )
+    if (!productBill) {
+        return res.status(400).json({message: "Can not find product bill by this id"})
+    }
+    return res.status(200).json(productBill)
+}
+
+const getProductBill = async (req, res) => {
+    const productBill = await db.productBill.findAll()
+    if (!productBill) {
+        return res.status(400).json({message: "Can not find product bill"})
+    }
+    return res.status(200).json(productBill)
+}
 
 const agency = {
     login,
     createCustomer,
     createBillDetail,
-    createBill
+    createBill,
+    getProductBillById,
+    getProductBill
 }
 module.exports = agency

@@ -5,6 +5,31 @@ const agency = (app) => {
 
     /**
      * Login to Factory account
+     * @route GET /product-bill/{id}
+     * @param {number} id.path.required - Login information
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/product-bill/:id", async (req, res, next) => {
+        agencyController.getProductBillById(req, res);
+    })
+
+    /**
+     * Login to Factory account
+     * @route GET /product-bill
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/product-bill", async (req, res, next) => {
+        agencyController.getProductBill(req, res);
+    })
+
+    /**
+     * Login to Factory account
      * @route POST /agency/auth/login
      * @param {Login.model} point.body.required - Login information
      * @group Agency
@@ -26,12 +51,13 @@ const agency = (app) => {
      * Login to Factory account
      * @route POST /agency/customers
      * @param {Customer.model} point.body.required - Login information
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
      */
 
-    app.post("/api/agency/customers",authenAgency, async (req, res, next) => {
+    app.post("/api/agency/customers", authenAgency, async (req, res, next) => {
         agencyController.createCustomer(req, res);
     })
 
@@ -44,12 +70,13 @@ const agency = (app) => {
      * Login to Factory account
      * @route POST /agency/product-bill
      * @param {ProductBill.model} point.body.required - Login information
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
      */
 
-    app.post("/api/agency/product-bill",authenAgency, async (req, res, next) => {
+    app.post("/api/agency/product-bill", authenAgency, async (req, res, next) => {
         agencyController.createBill(req, res);
     })
 
@@ -63,12 +90,13 @@ const agency = (app) => {
      * @route POST /agency/product-bill/{id}
      * @param {ProductBillDetail.model} point.body.required - Login information
      * @param {number} id.path.required - Role
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
      */
 
-    app.post("/api/agency/product-bill/:id",authenAgency, async (req, res, next) => {
+    app.post("/api/agency/product-bill/:id", authenAgency, async (req, res, next) => {
         agencyController.createBillDetail(req, res);
     })
 

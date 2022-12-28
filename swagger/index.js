@@ -33,7 +33,8 @@ const init_swagger = (app) => {
             '../routes/stock.js',
             '../routes/product.js',
             '../routes/agency.js',
-            '../routes/insurance.js'
+            '../routes/insurance.js',
+            '../routes/customer.js'
         ]
     };
     expressSwagger(options);
