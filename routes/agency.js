@@ -7,37 +7,67 @@ const agency = (app) => {
      * Login to Factory account
      * @route GET /product-bill/{id}
      * @param {number} id.path.required - Login information
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message, accessToken, refreshToken
      * @returns {Error}  default - Unexpected error
      */
 
-    app.get("/api/product-bill/:id", async (req, res, next) => {
+    app.get("/api/product-bill/:id",authenAgency, async (req, res, next) => {
         agencyController.getProductBillById(req, res);
     })
 
     /**
      * Login to Factory account
      * @route GET /product-bill
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message, accessToken, refreshToken
      * @returns {Error}  default - Unexpected error
      */
 
-    app.get("/api/product-bill", async (req, res, next) => {
+    app.get("/api/product-bill",authenAgency, async (req, res, next) => {
         agencyController.getProductBill(req, res);
     })
 
     /**
      * Login to Factory account
      * @route GET /agency/product/selled
+     * @security JWT
      * @group Agency
      * @returns {object} 200 - message, accessToken, refreshToken
      * @returns {Error}  default - Unexpected error
      */
 
-    app.get("/api/agency/product/selled", async (req, res, next) => {
+    app.get("/api/agency/product/selled",authenAgency, async (req, res, next) => {
         agencyController.statisticSelledProduct(req, res);
+    })
+
+    /**
+     * Login to Factory account
+     * @route GET /agency/insurance-bills
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/agency/insurance-bills",authenAgency, async (req, res, next) => {
+        agencyController.getInsuranceBill(req, res);
+    })
+
+    /**
+     * Login to Factory account
+     * @route GET /agency/insurance-bills/{id}
+     * @param {number} id.path.required - Login information
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/agency/insurance-bills/:id",authenAgency, async (req, res, next) => {
+        agencyController.getInsuranceBillById(req, res);
     })
 
     /**
@@ -110,6 +140,28 @@ const agency = (app) => {
 
     app.post("/api/agency/product-bill/:id", authenAgency, async (req, res, next) => {
         agencyController.createBillDetail(req, res);
+    })
+
+    /**
+     * @typedef InsuranceBill
+     * @property {number} customerId.required -
+     * @property {number} productId.required -
+     * @property {string} status.required -
+     * @property {number} quantity.required -
+     * @property {number} stockId.required -
+     */
+    /**
+     * Login to Factory account
+     * @route POST /agency/insurance-bill
+     * @param {InsuranceBill.model} point.body.required - Login information
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.post("/api/agency/insurance-bill", authenAgency, async (req, res, next) => {
+        agencyController.createNewInsuranceBill(req, res);
     })
 
 }

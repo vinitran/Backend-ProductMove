@@ -18,7 +18,7 @@ const getStocksByCategory = async (req, res) => {
 
     const stocks = await db.stock.findAll({
         where: { category: params.category },
-        include: db.productStockDetail
+        // include: db.productStockDetail
     })
 
     if (!stocks) {
@@ -41,7 +41,6 @@ const getStockById = async (req, res) => {
 
     const stocks = await db.stock.findAll({
         where: {
-            category: "factory",
             id: params.id
         },
         include: db.productStockDetail
@@ -137,6 +136,7 @@ const getReceiverHistoryByCategory = async (req, res) => {
 const getProductInStockById = async (req, res) => {
     const {params} = req
     const stock = await db.stock.findOne({
+        attributes:['id'],
         where: {id: params.id},
         include: [{
             model: db.productStockDetail,

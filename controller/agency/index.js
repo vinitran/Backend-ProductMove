@@ -155,14 +155,18 @@ const getProductBillById = async (req, res) => {
 }
 
 const getProductBill = async (req, res) => {
-    const productBill = await db.productBill.findAll()
+    const productBill = await db.productBill.findAll({
+        include: [{
+            model: db.customer,
+        }]
+    })
     if (!productBill) {
         return res.status(400).json({ message: "Can not find product bill" })
     }
     return res.status(200).json(productBill)
 }
 
-const statisticSelledProduct = async(req,res) => {
+const statisticSelledProduct = async (req, res) => {
     const selledProduct = await db.productBillDetail.findAll({
         attributes: [
             'product_id',
@@ -173,6 +177,49 @@ const statisticSelledProduct = async(req,res) => {
     return res.status(200).json(selledProduct)
 }
 
+const createNewInsuranceBill = async (req, res) => {
+    const { body } = req
+    const insuranceBill = await db.insuranceBill.create({
+        customer_id: body.customerId,
+        product_id: body.productId,
+        status: "agency",
+        quantity: body.quantity,
+        stock_id: body.stockId
+    })
+
+    return res.status(200).json({
+        message: "Create Insurance Bill Successfully",
+        insuranceBill
+    })
+}
+
+
+const getInsuranceBill = async (req, res) => {
+    const insuranceBill = await db.insuranceBill.findAll()
+
+    return res.status(200).json({
+        message: "Create Insurance Bill Successfully",
+        insuranceBill
+    })
+}
+
+const getInsuranceBillById = async (req, res) => {
+    const insuranceBill = await db.insuranceBill.findOne({
+        where: {id: req.params.id},
+        include: [{
+            model: db.customer,
+        }, {
+            model: db.product,
+        }]
+    })
+
+    return res.status(200).json({
+        message: "Create Insurance Bill Successfully",
+        insuranceBill
+    })
+}
+
+
 const agency = {
     login,
     createCustomer,
@@ -180,6 +227,9 @@ const agency = {
     createBill,
     getProductBillById,
     getProductBill,
-    statisticSelledProduct
+    statisticSelledProduct,
+    createNewInsuranceBill,
+    getInsuranceBill,
+    getInsuranceBillById
 }
 module.exports = agency
