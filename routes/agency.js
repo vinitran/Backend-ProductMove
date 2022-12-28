@@ -30,6 +30,18 @@ const agency = (app) => {
 
     /**
      * Login to Factory account
+     * @route GET /agency/product/selled
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/agency/product/selled", async (req, res, next) => {
+        agencyController.statisticSelledProduct(req, res);
+    })
+
+    /**
+     * Login to Factory account
      * @route POST /agency/auth/login
      * @param {Login.model} point.body.required - Login information
      * @group Agency
@@ -82,7 +94,7 @@ const agency = (app) => {
 
     /**
      * @typedef ProductBillDetail
-     * @property {number} product_id.required -
+     * @property {number} productId.required -
      * @property {number} quantity.required -
      */
     /**

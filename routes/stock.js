@@ -2,7 +2,7 @@ const { authen } = require("../authentication/authen");
 const stock = require("../controller/stock/index")
 
 const stockRoute = (app) => {
-    
+
     /**
      * Get Stocks by category
      * @route GET /stocks/category/{category}
@@ -43,6 +43,20 @@ const stockRoute = (app) => {
 
     app.get("/api/stocks/history/category/:category/send", authen, async (req, res, next) => {
         stock.getSendHistoryByCategory(req, res);
+    });
+
+    /**
+     * Insert product to stock
+     * @route GET /stocks/{id}/products
+     * @security JWT
+     * @param {number}  id.path.required - Product Id
+     * @group Stock
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/stocks/:id/products", authen, async (req, res, next) => {
+        stock.getProductInStockById(req, res);
     });
 
     /**

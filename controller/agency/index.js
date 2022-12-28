@@ -99,7 +99,26 @@ const createBillDetail = async (req, res) => {
         product_bill_id: params.id
     })
 
-    return res.status(200).json({message: "Create detail bill successfully", productBillDetail})
+    const productBill = await db.productBill.findByPk(params.id)
+
+    await db.productStockDetail.increment(
+        { quantity: -body.quantity },
+        {
+            where: {
+                product_id: body.productId,
+                stock_id: productBill.stock_id
+            },
+        }
+    )
+
+    await db.stockHistory.create({
+        sender_stock_id: productBill.stock_id,
+        receiver_stock_id: null,
+        product_id: body.productId,
+        quantity: body.quantity
+    })
+
+    return res.status(200).json({ message: "Create detail bill successfully", productBillDetail })
 }
 
 const createBill = async (req, res) => {
@@ -125,12 +144,12 @@ const createBill = async (req, res) => {
     })
 }
 
-const getProductBillById = async(req, res) => {
+const getProductBillById = async (req, res) => {
     const productBill = await db.productBill.findByPk(req.params.id,
-        {include: db.productBillDetail}
-        )
+        { include: [db.customer, db.productBillDetail] }
+    )
     if (!productBill) {
-        return res.status(400).json({message: "Can not find product bill by this id"})
+        return res.status(400).json({ message: "Can not find product bill by this id" })
     }
     return res.status(200).json(productBill)
 }
@@ -138,9 +157,20 @@ const getProductBillById = async(req, res) => {
 const getProductBill = async (req, res) => {
     const productBill = await db.productBill.findAll()
     if (!productBill) {
-        return res.status(400).json({message: "Can not find product bill"})
+        return res.status(400).json({ message: "Can not find product bill" })
     }
     return res.status(200).json(productBill)
+}
+
+const statisticSelledProduct = async(req,res) => {
+    const selledProduct = await db.productBillDetail.findAll({
+        attributes: [
+            'product_id',
+            [db.sequelize.fn('sum', db.sequelize.col('quantity')), 'total_quantity']
+        ],
+        group: ['product_id'],
+    })
+    return res.status(200).json(selledProduct)
 }
 
 const agency = {
@@ -149,6 +179,7 @@ const agency = {
     createBillDetail,
     createBill,
     getProductBillById,
-    getProductBill
+    getProductBill,
+    statisticSelledProduct
 }
 module.exports = agency

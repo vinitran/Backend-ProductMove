@@ -134,6 +134,18 @@ const getReceiverHistoryByCategory = async (req, res) => {
     return res.status(200).json(history);
 }
 
+const getProductInStockById = async (req, res) => {
+    const {params} = req
+    const stock = await db.stock.findOne({
+        where: {id: params.id},
+        include: [{
+            model: db.productStockDetail,
+        }],
+    })
+
+    return res.status(200).json(stock)
+}
+
 
 
 const stock = {
@@ -142,6 +154,7 @@ const stock = {
     createStockByCategory,
     getSendHistoryByCategory,
     getReceiverHistoryByCategory,
+    getProductInStockById
 }
 
 module.exports = stock
