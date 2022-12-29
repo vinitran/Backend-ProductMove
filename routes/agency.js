@@ -45,6 +45,20 @@ const agency = (app) => {
 
     /**
      * Login to Factory account
+     * @route GET /agency/product/selled/month/{month}
+     * @param {number} month.path.required - Login information
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/agency/product/selled/month/:month",authenAgency, async (req, res, next) => {
+        agencyController.statisticSelledProductByMonth(req, res);
+    })
+
+    /**
+     * Login to Factory account
      * @route GET /agency/insurance-bills
      * @security JWT
      * @group Agency

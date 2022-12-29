@@ -2,7 +2,8 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
-const db = require('../../database/database')
+const db = require('../../database/database');
+const { param } = require('express-validator');
 
 const login = async (req, res) => {
     let schema = Joi.object({
@@ -52,7 +53,43 @@ const login = async (req, res) => {
     return res.status(200).json(okResponse);
 }
 
+const getInsuranceProduct = async (req, res) => {
+    const product = await db.insuranceBill.findAll({
+        where: { status: 'insurance' },
+    })
+    return res.status(200).json(product);
+}
+
+const exportProductToAgency = async (req, res) => {
+    const { params, body } = req
+    const product = await db.insuranceBill.update(
+        {
+            status: 'agency',
+            stock_id: body.stockId
+        },
+        { where: { id: params.id } }
+    )
+
+    return res.status(200).json({ message: 'Success', product })
+}
+
+const exportProductToFactory = async (req, res) => {
+    const { params, body } = req
+    const product = await db.insuranceBill.update(
+        {
+            status: 'factory',
+            stock_id: body.stockId
+        },
+        { where: { id: params.id } }
+    )
+
+    return res.status(200).json({ message: 'Success', product })
+}
+
 const insurance = {
     login,
+    getInsuranceProduct,
+    exportProductToAgency,
+    exportProductToFactory
 }
 module.exports = insurance

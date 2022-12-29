@@ -110,13 +110,13 @@ const createBill = async (req, res) => {
         customer_id: body.customerId,
         stock_id: body.stockId
     })
-        for (let i = 0; i < body.bill.length; i++) {
-            const data = {
-                data: body.bill[i],
-                productBill
-            }
-            createBillDetail(data)
+    for (let i = 0; i < body.bill.length; i++) {
+        const data = {
+            data: body.bill[i],
+            productBill
         }
+        createBillDetail(data)
+    }
 
     const bill = await db.productBill.findOne({
         where: { id: productBill.id },
@@ -163,6 +163,19 @@ const statisticSelledProduct = async (req, res) => {
     return res.status(200).json(selledProduct)
 }
 
+const statisticSelledProductByMonth = async (req, res) => {
+    const { params } = req
+    const selledProduct = await db.productBillDetail.findAll({
+        attributes: [
+            'product_id',
+            [db.sequelize.fn('sum', db.sequelize.col('quantity')), 'total_quantity']
+        ],
+        where: db.sequelize.where(db.sequelize.fn('MONTH', db.sequelize.col('createdAt')), params.month),
+        group: ['product_id'],
+    })
+    return res.status(200).json(selledProduct)
+}
+
 const createNewInsuranceBill = async (req, res) => {
     const { body } = req
     const insuranceBill = await db.insuranceBill.create({
@@ -183,10 +196,9 @@ const createNewInsuranceBill = async (req, res) => {
 const getInsuranceBill = async (req, res) => {
     const insuranceBill = await db.insuranceBill.findAll()
 
-    return res.status(200).json({
-        message: "Create Insurance Bill Successfully",
+    return res.status(200).json(
         insuranceBill
-    })
+    )
 }
 
 const getInsuranceBillById = async (req, res) => {
@@ -199,10 +211,9 @@ const getInsuranceBillById = async (req, res) => {
         }]
     })
 
-    return res.status(200).json({
-        message: "Create Insurance Bill Successfully",
+    return res.status(200).json(
         insuranceBill
-    })
+    )
 }
 
 const agency = {
@@ -214,6 +225,7 @@ const agency = {
     statisticSelledProduct,
     createNewInsuranceBill,
     getInsuranceBill,
-    getInsuranceBillById
+    getInsuranceBillById,
+    statisticSelledProductByMonth
 }
 module.exports = agency
