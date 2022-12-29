@@ -77,70 +77,56 @@ const createCustomer = async (req, res) => {
     })
 }
 
-const sell = async (req, res) => {
-
-}
-
-const createBillDetail = async (req, res) => {
-    const { body, params } = req;
-
-    let schema = Joi.object({
-        productId: Joi.number().required(),
-        quantity: Joi.number().required(),
-    });
-    const { err } = schema.validate(body);
-    if (err) {
-        return res.status(400).send(err);
-    }
-
-    const productBillDetail = await db.productBillDetail.create({
-        product_id: body.productId,
-        quantity: body.quantity,
-        product_bill_id: params.id
+const createBillDetail = async ({ data, productBill }) => {
+    await db.productBillDetail.create({
+        product_id: data.productId,
+        quantity: data.quantity,
+        product_bill_id: productBill.id
     })
 
-    const productBill = await db.productBill.findByPk(params.id)
-
     await db.productStockDetail.increment(
-        { quantity: -body.quantity },
+        { quantity: -data.quantity },
         {
             where: {
-                product_id: body.productId,
+                product_id: data.productId,
                 stock_id: productBill.stock_id
             },
         }
-    )
-
-    await db.stockHistory.create({
-        sender_stock_id: productBill.stock_id,
-        receiver_stock_id: null,
-        product_id: body.productId,
-        quantity: body.quantity
+    ).then(async () => {
+        await db.stockHistory.create({
+            sender_stock_id: productBill.stock_id,
+            receiver_stock_id: null,
+            product_id: data.productId,
+            quantity: data.quantity
+        })
     })
 
-    return res.status(200).json({ message: "Create detail bill successfully", productBillDetail })
 }
 
 const createBill = async (req, res) => {
     const { body } = req;
 
-    let schema = Joi.object({
-        customerId: Joi.number().required(),
-        stockId: Joi.number().required(),
-    });
-    const { err } = schema.validate(body);
-    if (err) {
-        return res.status(400).send(err);
-    }
-
     const productBill = await db.productBill.create({
         customer_id: body.customerId,
         stock_id: body.stockId
     })
+        for (let i = 0; i < body.bill.length; i++) {
+            const data = {
+                data: body.bill[i],
+                productBill
+            }
+            createBillDetail(data)
+        }
+
+    const bill = await db.productBill.findOne({
+        where: { id: productBill.id },
+        include: [{
+            model: db.productBillDetail,
+        }]
+    })
 
     return res.status(200).json({
         message: "Create product Bill successfully",
-        productBill
     })
 }
 
@@ -205,7 +191,7 @@ const getInsuranceBill = async (req, res) => {
 
 const getInsuranceBillById = async (req, res) => {
     const insuranceBill = await db.insuranceBill.findOne({
-        where: {id: req.params.id},
+        where: { id: req.params.id },
         include: [{
             model: db.customer,
         }, {
@@ -219,11 +205,9 @@ const getInsuranceBillById = async (req, res) => {
     })
 }
 
-
 const agency = {
     login,
     createCustomer,
-    createBillDetail,
     createBill,
     getProductBillById,
     getProductBill,

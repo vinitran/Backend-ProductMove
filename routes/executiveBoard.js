@@ -4,8 +4,8 @@ const executiveBoard = require("../controller/executiveBoard/index")
 const executiveBoardRoute = (app) => {
     /**
      * @typedef Register
-     * @property {string} username.required -
-     * @property {string} password.required -
+     * @property {string} username.required -- eg: admin
+     * @property {string} password.required -- eg: admin
      */
     /**
      * Register admin account
@@ -22,8 +22,8 @@ const executiveBoardRoute = (app) => {
 
     /**
      * @typedef Login
-     * @property {string} username.required -
-     * @property {string} password.required -
+     * @property {string} username.required - username - eg: admin
+     * @property {string} password.required - password - eg: admin
      */
     /**
      * Login admin account

@@ -123,26 +123,6 @@ const agency = (app) => {
     })
 
     /**
-     * @typedef ProductBillDetail
-     * @property {number} productId.required -
-     * @property {number} quantity.required -
-     */
-    /**
-     * Login to Factory account
-     * @route POST /agency/product-bill/{id}
-     * @param {ProductBillDetail.model} point.body.required - Login information
-     * @param {number} id.path.required - Role
-     * @security JWT
-     * @group Agency
-     * @returns {object} 200 - message
-     * @returns {Error}  default - Unexpected error
-     */
-
-    app.post("/api/agency/product-bill/:id", authenAgency, async (req, res, next) => {
-        agencyController.createBillDetail(req, res);
-    })
-
-    /**
      * @typedef InsuranceBill
      * @property {number} customerId.required -
      * @property {number} productId.required -
