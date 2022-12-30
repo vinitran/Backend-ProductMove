@@ -86,6 +86,20 @@ const agency = (app) => {
 
     /**
      * Login to Factory account
+     * @route GET /agency/insurance-bills/customer/{id}
+     * @param {number} id.path.required - Login information
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/agency/insurance-bills/customer/:id",authenAgency, async (req, res, next) => {
+        agencyController.getBillByCustomerId(req, res);
+    })
+
+    /**
+     * Login to Factory account
      * @route POST /agency/auth/login
      * @param {Login.model} point.body.required - Login information
      * @group Agency

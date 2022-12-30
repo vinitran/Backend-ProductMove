@@ -218,6 +218,18 @@ const getInsuranceBillById = async (req, res) => {
     )
 }
 
+const getBillByCustomerId = async (req, res) => {
+    const {params} = req
+    const bill = await db.productBill.findAll({ 
+        where: {customer_id: params.id},
+        include: [{
+            model: db.productBillDetail
+        }]
+    })
+
+    return res.status(200).json(bill)
+}
+
 const agency = {
     login,
     createCustomer,
@@ -228,6 +240,7 @@ const agency = {
     createNewInsuranceBill,
     getInsuranceBill,
     getInsuranceBillById,
-    statisticSelledProductByMonth
+    statisticSelledProductByMonth,
+    getBillByCustomerId
 }
 module.exports = agency
