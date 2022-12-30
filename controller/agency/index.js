@@ -194,7 +194,9 @@ const createNewInsuranceBill = async (req, res) => {
 
 
 const getInsuranceBill = async (req, res) => {
-    const insuranceBill = await db.insuranceBill.findAll()
+    const insuranceBill = await db.insuranceBill.findAll(
+        { include: [{ model: db.stock }] }
+    )
 
     return res.status(200).json(
         insuranceBill

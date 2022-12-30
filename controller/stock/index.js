@@ -39,7 +39,7 @@ const getStockById = async (req, res) => {
         return res.status(400).send(err);
     }
 
-    const stocks = await db.stock.findAll({
+    const stocks = await db.stock.findOne({
         where: {
             id: params.id
         },

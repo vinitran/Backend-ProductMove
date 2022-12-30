@@ -1,4 +1,4 @@
-const { authenFactory, authenInsurance } = require("../authentication/authen");
+const { authenInsurance } = require("../authentication/authen");
 const insuranceController = require("../controller/insurance/index")
 
 const insurance = (app) => {
