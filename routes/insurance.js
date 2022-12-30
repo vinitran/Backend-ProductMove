@@ -18,6 +18,20 @@ const insurance = (app) => {
 
     /**
      * Login to Factory account
+     * @route GET /insurance/products/{id}
+     * @param {number} id.path.required - Login information
+     * @security JWT
+     * @group Insurance
+     * @returns {object} 200 - message, accessToken, refreshToken
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.get("/api/insurance/products/:id",authenInsurance, async (req, res, next) => {
+        insuranceController.getInsuranceProductById(req, res);
+    })
+
+    /**
+     * Login to Factory account
      * @route POST /insurance/auth/login
      * @param {Login.model} point.body.required - Login information
      * @group Insurance

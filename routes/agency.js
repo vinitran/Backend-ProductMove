@@ -155,7 +155,7 @@ const agency = (app) => {
      * @route POST /agency/export-product/{id}/insurance
      * @param {number} id.path.required - id product
      * @security JWT
-     * @group Agency
+     * @group Agency  
      * @returns {object} 200 - message
      * @returns {Error}  default - Unexpected error
      */

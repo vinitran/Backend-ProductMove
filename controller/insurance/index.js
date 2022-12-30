@@ -60,6 +60,11 @@ const getInsuranceProduct = async (req, res) => {
     return res.status(200).json(product);
 }
 
+const getInsuranceProductById = async (req, res) => {
+    const product = await db.insuranceBill.findByPk(req.params.id)
+    return res.status(200).json(product);
+}
+
 const exportProductToAgency = async (req, res) => {
     const { params, body } = req
     const product = await db.insuranceBill.update(
@@ -90,6 +95,7 @@ const insurance = {
     login,
     getInsuranceProduct,
     exportProductToAgency,
-    exportProductToFactory
+    exportProductToFactory,
+    getInsuranceProductById
 }
 module.exports = insurance
