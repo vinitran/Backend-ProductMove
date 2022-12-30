@@ -1,4 +1,4 @@
-const { authenFactory, authenAgency } = require("../authentication/authen");
+const { authen, authenAgency } = require("../authentication/authen");
 const agencyController = require("../controller/agency/index")
 
 const agency = (app) => {
@@ -53,7 +53,7 @@ const agency = (app) => {
      * @returns {Error}  default - Unexpected error
      */
 
-    app.get("/api/agency/product/selled/month/:month",authenAgency, async (req, res, next) => {
+    app.get("/api/agency/product/selled/month/:month",authen, async (req, res, next) => {
         agencyController.statisticSelledProductByMonth(req, res);
     })
 
@@ -148,6 +148,20 @@ const agency = (app) => {
 
     app.post("/api/agency/product-bill", authenAgency, async (req, res, next) => {
         agencyController.createBill(req, res);
+    })
+
+    /**
+     * Login to Factory account
+     * @route POST /agency/export-product/{id}/insurance
+     * @param {number} id.path.required - id product
+     * @security JWT
+     * @group Agency
+     * @returns {object} 200 - message
+     * @returns {Error}  default - Unexpected error
+     */
+
+    app.post("/api/agency/export-product/:id/insurance", authenAgency, async (req, res, next) => {
+        agencyController.exportProductToInsurance(req, res);
     })
 
     /**
