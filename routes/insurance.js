@@ -73,12 +73,9 @@ const insurance = (app) => {
      * @returns {Error}  default - Unexpected error
      */
 
-    app.post("/api/insurance/export-product/:id/agency",authenInsurance, async (req, res, next) => {
+    app.post("/api/insurance/export-product/:id/factory",authenInsurance, async (req, res, next) => {
         insuranceController.exportProductToFactory(req, res);
     })
-
-    
-
 }
 
 module.exports = insurance
